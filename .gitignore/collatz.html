@@ -1,5 +1,6 @@
 <html>
 <body>
+<button></button>
 <canvas id="myCanvas" onclick="tela()">
 Your browser does not support the HTML5 canvas tag.</canvas>
 
@@ -8,25 +9,26 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 	const DIÂMETRO = 2 * RAIO;
 	const DESLOCAMENTO_TEXTO = 10;
 	const ALT_FONTE = 2*DESLOCAMENTO_TEXTO;
+  var passos = 10;
 	var c = document.getElementById("myCanvas");
     c.width = document.body.clientWidth; //document.width is obsolete
-    c.height = 14*DIÂMETRO; //document.height is obsolete
+    c.height = 14*DIÂMETRO;  //document.height is obsolete
 	
 	const CENTRO_HORIZ = c.width / 2;
-	var ctx = c.getContext("2d");
+	var ctx = c.getContext("2d"); 
 	centro = CENTRO_HORIZ;
 	const AFASTAMENTO = DIÂMETRO*2;
 	inicio = RAIO+5;
-	NÚMEROS = [{valor: 4096, pos: inicio}, 
-			{valor: 682, pos: inicio+2*DIÂMETRO}, 
-			{valor: 680, pos: inicio+3*DIÂMETRO}, 
-			{valor: 113, pos: inicio+5*DIÂMETRO}, 
-			{valor: 672, pos: inicio+6*DIÂMETRO}, 
-			{valor: 640, pos: inicio+7*DIÂMETRO}, 
-			{valor: 106, pos: inicio+9*DIÂMETRO}, 
-			{valor: 104, pos: inicio+10*DIÂMETRO}, 
-			{valor: 17, pos: inicio+12*DIÂMETRO}, 
-			{valor: 96, pos: inicio+13*DIÂMETRO}];//, 682, 680, 113, 672, 640, 106, 104, 17, 96]
+	NÚMEROS = [{valor: 26624, pos: inicio}, //8192, 26624
+			{valor: 4437, pos: inicio+2*DIÂMETRO}, //1365, 4437
+			{valor: 4436, pos: inicio+4*DIÂMETRO}, //1364, 4436
+			{valor: 739, pos: inicio+6*DIÂMETRO},  //227, 739
+			{valor: 4432, pos: inicio+7*DIÂMETRO, afastamento: DIÂMETRO}, 
+			{valor: 738, pos: inicio+9*DIÂMETRO, afastamento: DIÂMETRO},  //226, 738
+			{valor: 4416, pos: inicio+11*DIÂMETRO}, /* //1344, 4416
+			{valor: 104, pos: inicio+12*DIÂMETRO}, 
+			{valor: 17, pos: inicio+14*DIÂMETRO}, 
+			{valor: 96, pos: inicio+15*DIÂMETRO}]//*/];//, 682, 680, 113, 672, 640, 106, 104, 17, 96]
 	quaternário = false;
 	
 	tela();
@@ -48,15 +50,19 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 		x = num.pos;
 		y = c.height - RAIO;
 		passo = 0;
-		while(n >= 1){
+		for(var i = 0; i <= passos; i++){
 			x2 = x;
 			if(nó(n)){
 				if(n%2==1) x2-=afastamento;
 				else x2+=afastamento;
-				afastamento = DIÂMETRO;
+        afastamento = DIÂMETRO;
+        if(num.afastamento != null) {
+          afastamento+=num.afastamento;
+          num.afastamento = null;
+        }
 			} else if(passo%2==1)afastamento += DIÂMETRO;
 			passo++;
-			if(n != 1){
+			if(i < passos){
 				y2 = y - DIÂMETRO - 5;
 				ctx.moveTo(x, y);
 				ctx.lineTo(x2, y2);
